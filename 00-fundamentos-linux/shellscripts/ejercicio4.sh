@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -xue
+set -ue
 # curl: curl -s https://www.cocopot.es/blog/como-se-cultiva/guia-del-cultivo-de-la-patata?srsltid=AfmBOorJQ9bm2225jQi_Z-RHa9elntxmn528WqFv9LoQPNVYeue1chyP
 # Página con patata: https://www.cocopot.es/blog/como-se-cultiva/guia-del-cultivo-de-la-patata?srsltid=AfmBOorJQ9bm2225jQi_Z-RHa9elntxmn528WqFv9LoQPNVYeue1chyP
 # ./ejercicio4.sh https://www.cocopot.es/blog/como-se-cultiva/guia-del-cultivo-de-la-patata?srsltid=AfmBOorJQ9bm2225jQi_Z-RHa9elntxmn528WqFv9LoQPNVYeue1chyP
@@ -17,8 +17,13 @@ if [[ $# -gt 1 ]]; then
 fi
 
 PAGINA='https://www.cocopot.es/blog/como-se-cultiva/guia-del-cultivo-de-la-patata?srsltid=AfmBOorJQ9bm2225jQi_Z-RHa9elntxmn528WqFv9LoQPNVYeue1chyP'
+FICHERO_TEMPORAL=./.ejercicio4.tmp
 
-OCURRENCIAS=$(curl -s $PAGINA | grep -io $1 | wc -l)
+curl -s -o $FICHERO_TEMPORAL $PAGINA
+
+OCURRENCIAS=$(cat $FICHERO_TEMPORAL | grep -io $1 | wc -l)
+
+rm $FICHERO_TEMPORAL
 
 if (($OCURRENCIAS>0))
 then
