@@ -62,15 +62,7 @@ Que me gusta la bash!!!!
 
 #### Solución
 
-ejercicio3.sh
-
-```bash
-#!/bin/bash
-mkdir -p foo/{empty,dummy}
-echo 'Me encanta la bash!!' > foo/dummy/file1.txt
-touch foo/dummy/file2.txt
-cat ./foo/dummy/file1.txt > ./foo/dummy/file2.txt & mv ./foo/dummy/file2.txt ./foo/empty
-```
+En [ejercicio3.sh](./shellscripts/ejercicio3.sh)
 
 ### 4. Crea un script de bash que descargue el contenido de una página web a un fichero y busque en dicho fichero una palabra dada como parámetro al invocar el script
 
@@ -90,6 +82,10 @@ $ ejercicio4.sh patata
 > La palabra "patata" aparece 3 veces
 > Aparece por primera vez en la línea 27
 ```
+
+#### Solución
+
+En [ejercicio4.sh](./shellscripts/ejercicio4.sh)
 
 ### 5. OPCIONAL - Modifica el ejercicio anterior de forma que la URL de la página web se pase por parámetro y también verifique que la llamada al script sea correcta
 

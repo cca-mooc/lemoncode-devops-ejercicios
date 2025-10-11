@@ -16,14 +16,24 @@ FICHERO_TEMPORAL=./.ejercicio4.tmp
 
 curl -s -o $FICHERO_TEMPORAL $PAGINA
 
-OCURRENCIAS=$(cat $FICHERO_TEMPORAL | grep -io $1 | wc -l)
+# Envuelto en paréntesis para tenerlo como un número y no una cadena con espacios al principio
+OCURRENCIAS=($(cat $FICHERO_TEMPORAL | grep -io $1 | wc -l))
 
-rm $FICHERO_TEMPORAL
-
-if (($OCURRENCIAS>0))
+if (($OCURRENCIAS==0))
 then
-  echo "Contiene \"$1\""
+  echo "No contiene \"$1\""
   exit 0
 fi
 
-echo "No contiene \"$1\""
+echo "Contiene \"$1\""
+
+if (($OCURRENCIAS == 1)); then
+  echo "Aparece una vez"
+else
+  echo "Aparece $OCURRENCIAS veces"
+fi
+
+PRIMERA_OCURRENCIA=$(cat $FICHERO_TEMPORAL | grep -nio $1 | head -n1)
+echo "Primera aparición en la línea: ${PRIMERA_OCURRENCIA%%:*}"
+
+rm $FICHERO_TEMPORAL
