@@ -87,6 +87,13 @@ $ ejercicio4.sh patata
 
 En [ejercicio4.sh](./shellscripts/ejercicio4.sh)
 
+Puede probarse con:
+```bash
+./shellscripts/ejercicio4.sh patatas
+./shellscripts/ejercicio4.sh '<head>'
+./shellscripts/ejercicio4.sh australopitecus
+```
+
 ### 5. OPCIONAL - Modifica el ejercicio anterior de forma que la URL de la página web se pase por parámetro y también verifique que la llamada al script sea correcta
 
 Si al invocar el script este no recibe dos parámetros (URL y palabra a buscar), se deberá de mostrar el siguiente mensaje:
