@@ -110,3 +110,7 @@ $ ejercicio5.sh https://lemoncode.net/ patata
 > La palabra "patata" aparece 1 vez
 > Aparece únicamente en la línea 27
 ```
+
+#### Solución
+
+En [ejercicio5.sh](./shellscripts/ejercicio5.sh)
