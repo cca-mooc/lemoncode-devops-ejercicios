@@ -765,8 +765,66 @@ Keep-Alive: timeout=5
 
 
 ### 🎪 Reto 4: Docker Compose
-1. ✅ Archivo `compose.yml` completo y documentado con comentarios
-2. ✅ Archivo `.env` (si es necesario) con variables de entorno
-3. ✅ Comando `docker-compose up` ejecutándose exitosamente
-4. ✅ Captura de pantalla de todos los servicios corriendo (`docker-compose ps`)
-5. ✅ Captura de pantalla de la aplicación completa en `http://localhost:3000`
+#### 1. ✅ Archivo `compose.yml` completo y documentado con comentarios
+[compose.yml](./node-stack/compose.yml) creado:
+```yaml
+---
+services:
+  frontend:
+    depends_on:
+      - backend
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      API_URL: http://backend:5001/api/classes
+
+  backend:
+    depends_on:
+      - mongodb
+    build:
+      context: ./backend
+    ports:
+      - "5001:5001"
+    environment:
+      DATABASE_URL: mongodb://admin:password@mongodb:27017
+      DATABASE_NAME: LemoncodeCourseDb
+      PORT: "5001"
+      HOST: "0.0.0.0"
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+
+volumes:
+  mongo-data:
+```
+#### 2. ✅ Archivo `.env` (si es necesario) con variables de entorno
+Opté por no usar un archivo `.env` ya que las variables de entorno las pasé directamente en el `compose.yml`.
+
+#### 3. ✅ Comando `docker-compose up` ejecutándose exitosamente
+```bash
+❯ docker compose up -d
+[+] Running 4/4
+ ✔ Network node-stack_default       Created                                                                                                                                                                                         0.1s 
+ ✔ Container node-stack-mongodb-1   Started                                                                                                                                                                                         0.2s 
+ ✔ Container node-stack-backend-1   Started                                                                                                                                                                                         0.2s 
+ ✔ Container node-stack-frontend-1  Started       
+```
+#### 4. ✅ Captura de pantalla de todos los servicios corriendo (`docker-compose ps`)
+```bash
+❯ docker-compose ps
+NAME                    IMAGE                 COMMAND                  SERVICE    CREATED         STATUS         PORTS
+node-stack-backend-1    node-stack-backend    "docker-entrypoint.s…"   backend    2 minutes ago   Up 2 minutes   5000/tcp, 0.0.0.0:5001->5001/tcp, [::]:5001->5001/tcp
+node-stack-frontend-1   node-stack-frontend   "docker-entrypoint.s…"   frontend   2 minutes ago   Up 2 minutes   0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp
+node-stack-mongodb-1    mongo:latest          "docker-entrypoint.s…"   mongodb    2 minutes ago   Up 2 minutes   0.0.0.0:27017->27017/tcp, [::]:27017->27017/tcp
+```
+#### 5. ✅ Captura de pantalla de la aplicación completa en `http://localhost:3000`
+![Captura de pantalla de la aplicación corriendo en localhost:3000](./img/docker-compose-up.png)
