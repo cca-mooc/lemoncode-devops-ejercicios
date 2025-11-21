@@ -1,14 +1,13 @@
 # Ejercicios Módulo 2 - Contenedores
 
-### Entregables
+## Entregables
 
-#### 📦 Reto 1: MongoDB en Contenedor
-1. ✅ Comandos utilizados para crear la red Docker
+### 📦 Reto 1: MongoDB en Contenedor
+### 1. ✅ Comandos utilizados para crear la red Docker
 ```bash
 ❯ docker network create calendar-net
 f45cf76d47ec1dcb2ef3d99bc5abef27e95c2d4676eb1e813b321cd37a9e34c7
 
-lemon-exercises on  main [!?] 
 ❯ docker network ls
 NETWORK ID     NAME           DRIVER    SCOPE
 1ce97b7b5a90   bridge         bridge    local
@@ -17,28 +16,56 @@ f45cf76d47ec   calendar-net   bridge    local
 f217cf256abc   minikube       bridge    local
 6f564187a0a4   none           null      local
 ```
-2. ✅ Comando para ejecutar el contenedor de MongoDB
+### 2. ✅ Comando para ejecutar el contenedor de MongoDB
 ```bash
-❯ docker run -d --network calendar-net --name mongodb mongo:latest
-bd48076fbf6aa11d517aea6da60f3b3624776124d19befea1e4a5162f9235ae8
+❯ docker run -d --network calendar-net -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=password --name mongodb mongo:latest
+29005cd30d07062a392bd108baf2f94a556aa29211a6c330ec8feb19704c0234
 
 ❯ docker ps
-CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS         PORTS       NAMES
-bd48076fbf6a   mongo:latest   "docker-entrypoint.s…"   5 seconds ago   Up 5 seconds   27017/tcp   mongodb
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS         PORTS                                             NAMES
+29005cd30d07   mongo:latest   "docker-entrypoint.s…"   6 seconds ago   Up 5 seconds   0.0.0.0:27017->27017/tcp, [::]:27017->27017/tcp   mongodb
 
 ❯ docker network inspect calendar-net --format '{{json .Containers}}' | jq
 {
-  "bd48076fbf6aa11d517aea6da60f3b3624776124d19befea1e4a5162f9235ae8": {
+  "29005cd30d07062a392bd108baf2f94a556aa29211a6c330ec8feb19704c0234": {
     "Name": "mongodb",
-    "EndpointID": "f469d9d6208bf0d0b1a2305fe90262a0631c63c4a8ee3631ccac2b7d551b46fa",
+    "EndpointID": "67614f46d0aee26b067dcea793683bd6d4a495b77b9891a556167deac020f8dd",
     "MacAddress": "02:42:ac:12:00:02",
     "IPv4Address": "172.18.0.2/16",
     "IPv6Address": ""
   }
 }
 ```
-3. ✅ Configuración de conexión del backend a MongoDB
-4. ✅ Prueba REST Client mostrando peticiones exitosas (`backend/client.http`)
+### 3. ✅ Configuración de conexión del backend a MongoDB
+Primero creo el fichero `.env`:
+```env
+DATABASE_URL=mongodb://admin:password@localhost:27017
+DATABASE_NAME=LemoncodeCourseDb
+HOST=localhost
+PORT=5000
+```
+
+Después de instalar las dependencias ejecuto el backend:
+```bash
+❯ npm start                                                                                                                                                 
+
+> lemoncode-backend@1.0.0 start
+> node app.js
+
+
+══════════════════════════════════════════════════════════════════════
+🍋 LEMONCODE CALENDAR - BACKEND (Node.js + Express)
+══════════════════════════════════════════════════════════════════════
+🔄 Conectando a MongoDB...
+✅ Conexión a MongoDB exitosa
+📚 Colección Classes cargada
+🚀 Servidor ejecutándose en: http://localhost:5000
+📚 API: http://localhost:5000/api/classes
+⏰ Hora: 21/11/2025, 10:21:39
+══════════════════════════════════════════════════════════════════════
+```
+
+### 4. ✅ Prueba REST Client mostrando peticiones exitosas (`backend/client.http`)
 
 #### 🐳 Reto 2: Dockerizar el Backend
 1. ✅ Archivo `Dockerfile` del backend 
