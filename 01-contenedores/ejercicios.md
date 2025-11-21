@@ -628,8 +628,33 @@ Successfully tagged calendar-back:latest
 </details>
 
 #### 3. ✅ Comando para ejecutar el contenedor del backend
+```
+❯ docker run -d --name calendar-back \
+  --network calendar-net \
+  -p 5001:5000 \
+  -e DATABASE_URL='mongodb://admin:password@mongodb:27017' \
+  -e DATABASE_NAME='LemoncodeCourseDb' \
+  -e PORT=5000 \
+  -e HOST='0.0.0.0' \
+  calendar-back
+a5bd32f2a155b0101a80765a9e9429173adb7cd7ebec2309af48a0db50a0c7cd
+```
 #### 4. ✅ Prueba REST Client validando que la API responde correctamente
+```bash
+❯ curl -i http://localhost:5001/api/classes           
 
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Access-Control-Allow-Origin: *
+Content-Type: application/json; charset=utf-8
+Content-Length: 2272
+ETag: W/"8e0-4P6kgRLYw5VLkYHuQqNhEzZPzWA"
+Date: Fri, 21 Nov 2025 11:04:31 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+[{"_id":"69203634ad72f67503dd310c","name":"Contenedores I","instructor":"Gisela Torres","startDate":"2025-10-17T18:00:00Z","endDate":"2025-10-17T20:00:00Z","duration":2,"level":"Beginner"},{"_id":"69203634ad72f67503dd310d","name":"Contenedores II","instructor":"Gisela Torres","startDate":"2025-10-24T18:00:00Z","endDate":"2025-10-24T20:00:00Z","duration":2,"level":"Beginner"},{"_id":"69203634ad72f67503dd310e","name":"Contenedores III","instructor":"Gisela Torres","startDate":"2025-10-31T18:00:00Z","endDate":"2025-10-31T20:00:00Z","duration":2,"level":"Beginner"},{"_id":"69203634ad72f67503dd310f","name":"Contenedores IV","instructor":"Gisela Torres","startDate":"2025-11-07T18:00:00Z","endDate":"2025-11-07T20:00:00Z","duration":2,"level":"Beginner"},{"_id":"69203634ad72f67503dd3110","name":"Contenedores V","instructor":"Gisela Torres","startDate":"2025-11-14T18:00:00Z","endDate":"2025-11-14T20:00:00Z","duration":2,"level":"Beginner"},{"_id":"69203634ad72f67503dd3111","name":"Contenedores VI","instructor":"Gisela Torres","startDate":"2025-11-21T18:00:00Z","endDate":"2025-11-21T20:00:00Z","duration":2,"level":"Beginner"},{"_id":"69203634ad72f67503dd3112","name":"Azure Web Services I","instructor":"Gisela Torres","startDate":"2026-02-20T18:00:00Z","endDate":"2026-02-20T20:00:00Z","duration":2,"level":"Beginner"},{"_id":"69203634ad72f67503dd3113","name":"Azure Web Services II","instructor":"Gisela Torres","startDate":"2026-02-27T18:00:00Z","endDate":"2026-02-27T20:00:00Z","duration":2,"level":"Beginner"},{"_id":"69203634ad72f67503dd3114","name":"Kubernetes AKS","instructor":"Gisela Torres","startDate":"2026-03-13T18:00:00Z","endDate":"2026-03-13T20:00:00Z","duration":2,"level":"Beginner"},{"_id":"69203634ad72f67503dd3115","name":"SESIÓN IA I","instructor":"Gisela Torres","startDate":"2026-04-17T18:00:00Z","endDate":"2026-04-17T20:00:00Z","duration":2,"level":"Beginner"},{"_id":"69203634ad72f67503dd3116","name":"SESIÓN IA II","instructor":"Gisela Torres","startDate":"2026-04-24T18:00:00Z","endDate":"2026-04-24T20:00:00Z","duration":2,"level":"Beginner"},{"_id":"69203634ad72f67503dd3117","name":"SESIÓN IA III","instructor":"Gisela Torres","startDate":"2026-05-01T18:00:00Z","endDate":"2026-05-01T20:00:00Z","duration":2,"level":"Beginner"}]% 
+```
 ### 🎨 Reto 3: Dockerizar el Frontend
 1. ✅ Archivo `Dockerfile` del frontend
 2. ✅ Comando para construir la imagen del frontend
