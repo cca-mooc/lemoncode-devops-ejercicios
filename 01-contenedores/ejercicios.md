@@ -656,10 +656,112 @@ Keep-Alive: timeout=5
 [{"_id":"69203634ad72f67503dd310c","name":"Contenedores I","instructor":"Gisela Torres","startDate":"2025-10-17T18:00:00Z","endDate":"2025-10-17T20:00:00Z","duration":2,"level":"Beginner"},{"_id":"69203634ad72f67503dd310d","name":"Contenedores II","instructor":"Gisela Torres","startDate":"2025-10-24T18:00:00Z","endDate":"2025-10-24T20:00:00Z","duration":2,"level":"Beginner"},{"_id":"69203634ad72f67503dd310e","name":"Contenedores III","instructor":"Gisela Torres","startDate":"2025-10-31T18:00:00Z","endDate":"2025-10-31T20:00:00Z","duration":2,"level":"Beginner"},{"_id":"69203634ad72f67503dd310f","name":"Contenedores IV","instructor":"Gisela Torres","startDate":"2025-11-07T18:00:00Z","endDate":"2025-11-07T20:00:00Z","duration":2,"level":"Beginner"},{"_id":"69203634ad72f67503dd3110","name":"Contenedores V","instructor":"Gisela Torres","startDate":"2025-11-14T18:00:00Z","endDate":"2025-11-14T20:00:00Z","duration":2,"level":"Beginner"},{"_id":"69203634ad72f67503dd3111","name":"Contenedores VI","instructor":"Gisela Torres","startDate":"2025-11-21T18:00:00Z","endDate":"2025-11-21T20:00:00Z","duration":2,"level":"Beginner"},{"_id":"69203634ad72f67503dd3112","name":"Azure Web Services I","instructor":"Gisela Torres","startDate":"2026-02-20T18:00:00Z","endDate":"2026-02-20T20:00:00Z","duration":2,"level":"Beginner"},{"_id":"69203634ad72f67503dd3113","name":"Azure Web Services II","instructor":"Gisela Torres","startDate":"2026-02-27T18:00:00Z","endDate":"2026-02-27T20:00:00Z","duration":2,"level":"Beginner"},{"_id":"69203634ad72f67503dd3114","name":"Kubernetes AKS","instructor":"Gisela Torres","startDate":"2026-03-13T18:00:00Z","endDate":"2026-03-13T20:00:00Z","duration":2,"level":"Beginner"},{"_id":"69203634ad72f67503dd3115","name":"SESIÓN IA I","instructor":"Gisela Torres","startDate":"2026-04-17T18:00:00Z","endDate":"2026-04-17T20:00:00Z","duration":2,"level":"Beginner"},{"_id":"69203634ad72f67503dd3116","name":"SESIÓN IA II","instructor":"Gisela Torres","startDate":"2026-04-24T18:00:00Z","endDate":"2026-04-24T20:00:00Z","duration":2,"level":"Beginner"},{"_id":"69203634ad72f67503dd3117","name":"SESIÓN IA III","instructor":"Gisela Torres","startDate":"2026-05-01T18:00:00Z","endDate":"2026-05-01T20:00:00Z","duration":2,"level":"Beginner"}]% 
 ```
 ### 🎨 Reto 3: Dockerizar el Frontend
-1. ✅ Archivo `Dockerfile` del frontend
-2. ✅ Comando para construir la imagen del frontend
-3. ✅ Comando para ejecutar el contenedor del frontend
-4. ✅ Archivo `.env` o variables de entorno configuradas correctamente
+#### 1. ✅ Archivo `Dockerfile` del frontend
+
+[Dockerfile](./node-stack/frontend/Dockerfile) para el frontend creado:
+```Dockerfile
+FROM node:24-alpine
+
+WORKDIR /app
+
+COPY ["package.json", "package-lock.json*", "./"]
+
+RUN npm ci --omit=dev
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["node", "server.js"]
+```
+#### 2. ✅ Comando para construir la imagen del frontend
+<details>
+<summary>En la carpeta del frontend, donde puse el dockerfile, ejecuté `docker build -t calendar-front .`</summary>
+
+```plaintext
+❯ docker build -t calendar-front .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  196.1kB
+Step 1/7 : FROM node:24-alpine
+ ---> 2867d550cf9d
+Step 2/7 : WORKDIR /app
+ ---> Using cache
+ ---> 55f99b764571
+Step 3/7 : COPY ["package.json", "package-lock.json*", "./"]
+ ---> Using cache
+ ---> df9ff002b7c7
+Step 4/7 : RUN npm ci --omit=dev
+ ---> Running in 7f0338a4b9a9
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'lemoncode-frontend@1.0.0',                                                                                                                                                                               
+npm warn EBADENGINE   required: { node: '18.x || 20.x || 22.x' },                                                                                                                                                                        
+npm warn EBADENGINE   current: { node: 'v24.11.1', npm: '11.6.2' }                                                                                                                                                                       
+npm warn EBADENGINE }                                                                                                                                                                                                                    
+npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead                                                                                                                                             
+                                                                                                                                                                                                                                         
+added 84 packages, and audited 85 packages in 788ms
+
+18 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+npm notice
+npm notice New patch version of npm available! 11.6.2 -> 11.6.3                                                                                                                                                                          
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.6.3                                                                                                                                                                    
+npm notice To update run: npm install -g npm@11.6.3                                                                                                                                                                                      
+npm notice                                                                                                                                                                                                                               
+ ---> Removed intermediate container 7f0338a4b9a9                                                                                                                                                                                        
+ ---> cf76daf31e8f
+Step 5/7 : COPY . .
+ ---> 0d1c50f48eb1
+Step 6/7 : EXPOSE 3000
+ ---> Running in 2131cc2efc71
+ ---> Removed intermediate container 2131cc2efc71
+ ---> 47845a4f946b
+Step 7/7 : CMD ["node", "server.js"]
+ ---> Running in 1af9f1150f97
+ ---> Removed intermediate container 1af9f1150f97
+ ---> e7f7a1ecb56d
+Successfully built e7f7a1ecb56d
+Successfully tagged calendar-front:latest
+```
+</details>
+
+En este me di cuenta que en el npm install del back debí haber puesto `--omit=dev` en lugar de `--only=production`, 
+se me pasó el warning.
+
+#### 3. ✅ Comando para ejecutar el contenedor del frontend
+```bash
+❯ docker run -d --name calendar-front \
+    --network calendar-net \
+    -p 3000:3000 \
+    -e API_URL='http://calendar-back:5000/api/classes' \
+    calendar-front
+
+❯ docker ps
+CONTAINER ID   IMAGE            COMMAND                  CREATED          STATUS          PORTS                                             NAMES
+0bd4fa3aec45   calendar-front   "docker-entrypoint.s…"   3 seconds ago    Up 2 seconds    0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp       calendar-front
+a5bd32f2a155   calendar-back    "docker-entrypoint.s…"   14 minutes ago   Up 14 minutes   0.0.0.0:5001->5000/tcp, [::]:5001->5000/tcp       calendar-back
+29005cd30d07   mongo:latest     "docker-entrypoint.s…"   2 hours ago      Up 2 hours      0.0.0.0:27017->27017/tcp, [::]:27017->27017/tcp   mongodb
+
+❯ curl -i http://localhost:3000
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: text/html; charset=utf-8
+Content-Length: 18312
+ETag: W/"4788-PvkP1U1lXY0IWNs7Lp+mG4RT72s"
+Date: Fri, 21 Nov 2025 11:20:26 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+<!doctype html>
+...(resto del HTML)...
+```
+#### 4. ✅ Archivo `.env` o variables de entorno configuradas correctamente
+👆🏼Las variables de entorno las pasé en el comando `docker run` anterior.
 
 
 ### 🎪 Reto 4: Docker Compose
