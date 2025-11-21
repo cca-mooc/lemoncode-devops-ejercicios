@@ -1,8 +1,6 @@
-# Ejercicios Módulo 2 - Contenedores
+# Ejercicios Módulo 2 - Contenedores - Entrega
 
-## Entregables
-
-### 📦 Reto 1: MongoDB en Contenedor
+## 📦 Reto 1: MongoDB en Contenedor
 ### 1. ✅ Comandos utilizados para crear la red Docker
 ```bash
 ❯ docker network create calendar-net
@@ -542,20 +540,104 @@ Response code: 404 (Not Found); Time: 5ms (5 ms); Content length: 154 bytes (154
 ```
 </details>
 
-#### 🐳 Reto 2: Dockerizar el Backend
-1. ✅ Archivo `Dockerfile` del backend 
-2. ✅ Comando para construir la imagen 
-3. ✅ Comando para ejecutar el contenedor del backend
-4. ✅ Prueba REST Client validando que la API responde correctamente
+### 🐳 Reto 2: Dockerizar el Backend
+#### 1. ✅ Archivo `Dockerfile` del backend
+[Dockerfile](./node-stack/backend/Dockerfile) para el backend creado`:
+```Dockerfile
+FROM node:24-alpine
 
-#### 🎨 Reto 3: Dockerizar el Frontend
+WORKDIR /app
+
+COPY ["package.json", "package-lock.json*", "./"]
+
+RUN npm ci --only=production
+
+COPY . .
+
+EXPOSE 5000
+
+CMD ["node", "app.js"]
+```
+También creé un archivo [.dockerignore](./node-stack/backend/.dockerignore) para evitar copiar archivos innecesarios.
+
+#### 2. ✅ Comando para construir la imagen 
+<details>
+<summary>En la carpeta del backend, donde puse el dockerfile, ejecuté `docker build -t calendar-back .`</summary>
+
+```plaintext
+❯ docker build -t calendar-back .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  55.81kB
+Step 1/7 : FROM node:24-alpine
+24-alpine: Pulling from library/node
+72d1d0bb1bef: Pulling fs layer
+c2cf979b2722: Pulling fs layer
+6b59a28fa201: Pulling fs layer
+3f6b9a1a997b: Pulling fs layer
+72d1d0bb1bef: Download complete
+6b59a28fa201: Download complete
+3f6b9a1a997b: Download complete
+c2cf979b2722: Download complete
+Digest: sha256:2867d550cf9d8bb50059a0fff528741f11a84d985c732e60e19e8e75c7239c43
+Status: Downloaded newer image for node:24-alpine
+---> 2867d550cf9d
+Step 2/7 : WORKDIR /app
+---> Running in f6b2aa42297b
+---> Removed intermediate container f6b2aa42297b
+---> 55f99b764571
+Step 3/7 : COPY ["package.json", "package-lock.json*", "./"]
+---> 1aa6963a0f41
+Step 4/7 : RUN npm ci --only=production
+---> Running in fe75ccf6ac91
+npm warn config only Use `--omit=dev` to omit dev dependencies from the install.
+npm warn EBADENGINE Unsupported engine {                                                                                                                                                                                                 
+npm warn EBADENGINE   package: 'lemoncode-backend@1.0.0',                                                                                                                                                                                
+npm warn EBADENGINE   required: { node: '18.x || 20.x || 22.x' },                                                                                                                                                                        
+npm warn EBADENGINE   current: { node: 'v24.11.1', npm: '11.6.2' }                                                                                                                                                                       
+npm warn EBADENGINE }
+
+added 84 packages, and audited 85 packages in 621ms
+
+15 packages are looking for funding
+run `npm fund` for details
+
+found 0 vulnerabilities
+npm notice
+npm notice New patch version of npm available! 11.6.2 -> 11.6.3                                                                                                                                                                          
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.6.3                                                                                                                                                                    
+npm notice To update run: npm install -g npm@11.6.3                                                                                                                                                                                      
+npm notice                                                                                                                                                                                                                               
+---> Removed intermediate container fe75ccf6ac91                                                                                                                                                                                        
+---> 0842e4319298
+Step 5/7 : COPY . .
+---> e51d6fac945b
+Step 6/7 : EXPOSE 5000
+---> Running in c8ca474d5be8
+---> Removed intermediate container c8ca474d5be8
+---> 253bb46eb633
+Step 7/7 : CMD ["node", "app.js"]
+---> Running in 6c6595189d57
+---> Removed intermediate container 6c6595189d57
+---> 8ac323e3d4c8
+Successfully built 8ac323e3d4c8
+Successfully tagged calendar-back:latest
+```
+</details>
+
+#### 3. ✅ Comando para ejecutar el contenedor del backend
+#### 4. ✅ Prueba REST Client validando que la API responde correctamente
+
+### 🎨 Reto 3: Dockerizar el Frontend
 1. ✅ Archivo `Dockerfile` del frontend
 2. ✅ Comando para construir la imagen del frontend
 3. ✅ Comando para ejecutar el contenedor del frontend
 4. ✅ Archivo `.env` o variables de entorno configuradas correctamente
 
 
-#### 🎪 Reto 4: Docker Compose
+### 🎪 Reto 4: Docker Compose
 1. ✅ Archivo `compose.yml` completo y documentado con comentarios
 2. ✅ Archivo `.env` (si es necesario) con variables de entorno
 3. ✅ Comando `docker-compose up` ejecutándose exitosamente
