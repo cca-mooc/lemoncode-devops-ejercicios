@@ -7,11 +7,11 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      run: nwp-client
+      app: nwp-client
   template:
     metadata:
       labels:
-        run: nwp-client
+        app: nwp-client
     spec:
       containers:
       - image: ghcr.io/carloscasalar/night-watch-planner-client:v0.3.1

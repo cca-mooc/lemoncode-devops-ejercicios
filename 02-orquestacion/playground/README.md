@@ -20,3 +20,6 @@ must be exposed and they will not communicate between each other.
 - `kubectl describe pod optimizer-64997fd79c-r95vh -n nwp` describe a pod
 - `kubectl logs -n nwp optimizer-77dcdfb5f-fcv5q --tail=50` check the logs of a container
 - `kubectl exec -n nwp optimizer-77dcdfb5f-fcv5q -- sh -c "wget -T 2 -O- http://localhost:3000/v1/health 2>&1"` execute a command inside the container
+- `kubectl get endpoints -n nwp nwp-client` -> get the client endpoints.
+- `kubectl delete deployment nwp-client -n nwp` -> Delete a deployment
+- `kubectl port-forward -n nwp svc/nwp-client 8080:80 &` -> Open a port forward tunnel to the client

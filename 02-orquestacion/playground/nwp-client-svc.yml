@@ -9,7 +9,7 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 8080
+      targetPort: 80
       # For minikube to expose it. Must be in 30000-32767 range
       nodePort: 30800
   type: NodePort
