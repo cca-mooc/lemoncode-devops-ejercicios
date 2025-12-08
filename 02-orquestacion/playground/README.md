@@ -13,6 +13,9 @@ must be exposed and they will not communicate between each other.
   - `minikube addons enable metrics-server` -> to enable the metrics server addon.
     - `kubectl get pods -n kube-system` -> to ensure the addon pod is up and running
     - `kubectl top pods -n nwp` -> see resource consumption in the namespace
+- `minikube addons enable ingress` -> Enable ingress controller
+  - `kubectl get pods -n ingress-nginx` -> Verify it is working
+  - `kubectl get ingress -n nwp` -> to list ingresses in the namespace
 - `kubectl get ns` -> list namespaces
 - `kubectl apply -f ./` -> apply changes in all the files
 - `kubectl get pods -n nwp` -> List pods in the namespace
@@ -23,3 +26,34 @@ must be exposed and they will not communicate between each other.
 - `kubectl get endpoints -n nwp nwp-client` -> get the client endpoints.
 - `kubectl delete deployment nwp-client -n nwp` -> Delete a deployment
 - `kubectl port-forward -n nwp svc/nwp-client 8080:80 &` -> Open a port forward tunnel to the client
+
+## Setup and Access
+
+After starting minikube and applying the configuration files:
+
+1. **Enable the ingress addon** (if not already enabled):
+   ```bash
+   minikube addons enable ingress
+   ```
+
+2. **Wait for the ingress controller to be ready**:
+   ```bash
+   kubectl wait --namespace ingress-nginx --for=condition=ready pod --selector=app.kubernetes.io/component=controller --timeout=120s
+   ```
+
+3. **Apply all configuration files**:
+   ```bash
+   kubectl apply -f ./
+   ```
+
+4. **Access the application locally**:
+   
+   Since NodePort services don't work directly with Minikube on macOS/Docker driver, use port-forwarding to access the ingress controller:
+   
+   ```bash
+   kubectl port-forward -n ingress-nginx svc/ingress-nginx-controller 8080:80
+   ```
+
+5. **Open the application**:
+   - **NWP Client**: http://localhost:8080/
+   - **Optimizer API**: http://localhost:8080/api/v1/health
