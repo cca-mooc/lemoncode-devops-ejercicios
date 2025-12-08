@@ -14,3 +14,5 @@ must be exposed and they will not communicate between each other.
     * `kubectl top pods -n nwp` -> see resource consumption in the namespace
 * `kubectl get ns` -> list namespaces 
 * `kubectl apply -f ./` -> apply changes in all the files
+* `kubectl get pods -n nwp` -> List pods in the namespace
+* `kubectl get events -n nwp --sort-by=.metadata.creationTimestamp` -> To wonder why containers are being restarted

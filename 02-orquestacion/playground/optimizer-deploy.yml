@@ -24,7 +24,17 @@ spec:
         resources:
           limits:
             cpu: 50m
-            memory: 100Mi
+            memory: 200Mi
           requests:
             cpu: 50m
-            memory: 100Mi
+            memory: 200Mi
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - netstat -an | grep 3000 || exit 1
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
