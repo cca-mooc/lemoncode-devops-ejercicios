@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: optimizer
+  namespace: nwp
+spec:
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: 3000
+    # For minikube to expose it. Must be in 30000-32767 range
+    nodePort: 30000
+  selector:
+    run: optimizer
+  # For minikube to expose the service in nodePort at the ip you can extract with `minikube ip`
+  type: NodePort
+  # type: LoadBalancer

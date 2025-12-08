@@ -1,0 +1,32 @@
+# kubectl create secret generic passw --from-literal password=admin123
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: optimizer
+  namespace: nwp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: optimizer
+  template:
+    metadata:
+      labels:
+        run: optimizer
+    spec:
+      containers:
+      - image: ghcr.io/carloscasalar/night-watch-planner-optimizer:v0.2.0
+        name: optimizer
+        env:
+        - name: PORT
+          value: "3000"
+        - name: NWP_CLIENT_URL
+          value: http://192.168.49.2:30800
+        resources:
+          limits:
+            cpu: 50m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+            memory: 100Mi
