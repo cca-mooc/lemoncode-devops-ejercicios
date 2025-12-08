@@ -14,7 +14,7 @@ spec:
         run: optimizer
     spec:
       containers:
-      - image: ghcr.io/carloscasalar/night-watch-planner-optimizer:v0.2.0
+      - image: ghcr.io/carloscasalar/night-watch-planner-optimizer:v0.3.0
         name: optimizer
         env:
         - name: PORT
@@ -29,11 +29,9 @@ spec:
             cpu: 50m
             memory: 200Mi
         livenessProbe:
-          exec:
-            command:
-            - /bin/sh
-            - -c
-            - netstat -an | grep 3000 || exit 1
+          httpGet:
+            path: /v1/health
+            port: 3000
           initialDelaySeconds: 30
           periodSeconds: 10
           timeoutSeconds: 5

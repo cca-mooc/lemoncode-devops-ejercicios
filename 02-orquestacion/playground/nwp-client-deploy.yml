@@ -14,7 +14,7 @@ spec:
         run: nwp-client
     spec:
       containers:
-      - image: ghcr.io/carloscasalar/night-watch-planner-client:v0.2.0
+      - image: ghcr.io/carloscasalar/night-watch-planner-client:v0.3.0
         name: nwp-client
         env:
         - name: PLAN_REST_API_HOST
