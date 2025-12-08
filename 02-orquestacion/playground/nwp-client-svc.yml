@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nwp-client
+  namespace: nwp
+spec:
+  selector:
+    app: nwp-client
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+      # For minikube to expose it. Must be in 30000-32767 range
+      nodePort: 30800
+  type: NodePort

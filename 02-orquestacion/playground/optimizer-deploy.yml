@@ -1,5 +1,3 @@
-# kubectl create secret generic passw --from-literal password=admin123
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:

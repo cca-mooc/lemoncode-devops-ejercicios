@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nwp-client
+  namespace: nwp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: nwp-client
+  template:
+    metadata:
+      labels:
+        run: nwp-client
+    spec:
+      containers:
+      - image: ghcr.io/carloscasalar/night-watch-planner-client:v0.2.0
+        name: nwp-client
+        env:
+        - name: PLAN_REST_API_HOST
+          value: http://192.168.49.2:30000
+        resources:
+          limits:
+            cpu: 20m
+            memory: 60Mi
+          requests:
+            cpu: 20m
+            memory: 60Mi
