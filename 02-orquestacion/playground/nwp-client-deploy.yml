@@ -18,7 +18,7 @@ spec:
         name: nwp-client
         env:
         - name: PLAN_REST_API_HOST
-          value: http://localhost:8080
+          value: http://localhost:8080/api
         resources:
           limits:
             cpu: 20m

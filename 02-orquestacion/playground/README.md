@@ -25,6 +25,7 @@ must be exposed and they will not communicate between each other.
 - `kubectl exec -n nwp optimizer-77dcdfb5f-fcv5q -- sh -c "wget -T 2 -O- http://localhost:3000/v1/health 2>&1"` execute a command inside the container
 - `kubectl get endpoints -n nwp nwp-client` -> get the client endpoints.
 - `kubectl delete deployment nwp-client -n nwp` -> Delete a deployment
+- `kubectl delete ingress nwp-ingress -n nwp` -> Delete the ingress
 - `kubectl port-forward -n nwp svc/nwp-client 8080:80 &` -> Open a port forward tunnel to the client
 
 ## Setup and Access
