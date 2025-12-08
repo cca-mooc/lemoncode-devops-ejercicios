@@ -7,11 +7,11 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      run: optimizer
+      app: optimizer
   template:
     metadata:
       labels:
-        run: optimizer
+        app: optimizer
     spec:
       containers:
       - image: ghcr.io/carloscasalar/night-watch-planner-optimizer:v0.3.1

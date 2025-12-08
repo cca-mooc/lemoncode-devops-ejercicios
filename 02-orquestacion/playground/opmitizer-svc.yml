@@ -11,7 +11,7 @@ spec:
     # For minikube to expose it. Must be in 30000-32767 range
     nodePort: 30000
   selector:
-    run: optimizer
+    app: optimizer
   # For minikube to expose the service in nodePort at the ip you can extract with `minikube ip`
   type: NodePort
   # type: LoadBalancer
