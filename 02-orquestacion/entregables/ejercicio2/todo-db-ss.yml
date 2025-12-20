@@ -1,0 +1,44 @@
+# After apply it, pods in this stateful set will have predictable names like `todo-db-0` and `todo-db-1`
+# You can try with more replicas with `kubectl scale statefulset/todo-db --replicas=5`, the we'll have todo-db from 0 to 4.
+# Notice that if you scale down back to 2, todo-db pods backs to 0, 1 but if you check `kubectl get pvc` pvc for 2,3,4 are still there
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: todo-db
+spec:
+  selector:
+    matchLabels:
+      app: todo-db
+  # The stateful set will take care of creating dns entries for each pod in the service.
+  # For example, the first pod is expected to be at todo-db-0.todo-db.default.svc.cluster.local
+  # You can verify it with:
+  # > kubectl run bb --image busybox -it
+  # > ns lookup todo-db-0.todo-db.default.svc.cluster.local
+  serviceName: todo-db
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: todo-db
+    spec:
+      containers:
+      - name: todo-db
+        image: todo-db:latest
+        ports:
+        - containerPort: 5432
+          name: db
+        volumeMounts:
+        - name: todo-db-pvc
+          mountPath: /dev/shm/var/lib/postgresql/data
+  # Once applied you can check it with `kubectl get pvc`
+  volumeClaimTemplates:
+  - metadata:
+      name: todo-db-pvc
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      # storageClassName must be one of `kubectl get sc` and it will be dynamically provisioned, 
+      # with other values it is expected to be statically provisioned with a PersistentVolume definition
+      storageClassName: standard
+      resources:
+        requests:
+          storage: 500Mi
