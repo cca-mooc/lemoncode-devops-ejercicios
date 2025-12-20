@@ -20,4 +20,13 @@ todo-db-0                        1/1     Running   0             29s
 > psql -U postgres
 ```
 - Al pegar el script me falló porque ya existía la BBDD (supongo que por las variables de entorno), pero pegando lo de después conseguí llevarla al estado inicial.
-- 
+```bash
+> kubectl exec -it todo-db-0 -- psql -U postgres -d todos_db -c "SELECT * FROM todos;"
+ id |     title     | completed |          due_date          | order 
+----+---------------+-----------+----------------------------+-------
+ 12 | Learn Jenkins | f         | 2020-12-04 18:37:44.234+00 |      
+ 13 | Learn GitLab  | t         | 2020-12-04 18:38:06.993+00 |      
+ 21 | Learn K8s     | f         | 2020-12-04 19:12:16.174+00 |      
+(3 rows)
+```
+
