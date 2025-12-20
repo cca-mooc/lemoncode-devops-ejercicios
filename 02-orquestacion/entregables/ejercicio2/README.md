@@ -14,3 +14,10 @@ docker build -f ./Dockerfile.todos_db -t todo-db:latest .
 NAME                             READY   STATUS    RESTARTS      AGE
 todo-db-0                        1/1     Running   0             29s
 ```
+- Ahora aplicamos el seed de los datos tal como indican las instrucciones:
+```bash
+> kubectl exec todo-db-0 -it -- bash
+> psql -U postgres
+```
+- Al pegar el script me falló porque ya existía la BBDD (supongo que por las variables de entorno), pero pegando lo de después conseguí llevarla al estado inicial.
+- 
