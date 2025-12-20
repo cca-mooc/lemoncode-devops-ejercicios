@@ -24,6 +24,9 @@ spec:
       containers:
       - name: todo-db
         image: todo-db:latest
+        envFrom:
+        - configMapRef:
+            name: todo-db-config
         ports:
         - containerPort: 5432
           name: db
