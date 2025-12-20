@@ -24,6 +24,7 @@ spec:
       containers:
       - name: todo-db
         image: todo-db:latest
+        imagePullPolicy: Never
         envFrom:
         - configMapRef:
             name: todo-db-config
