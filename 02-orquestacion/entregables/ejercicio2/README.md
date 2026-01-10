@@ -1,5 +1,7 @@
 # Ejercicio 2: Monolito con base de datos
 
+## Paso 1. Crear una capa de persistencia de datos
+
 - Tuve que crear la imagen porque utilizo un macbook para los ejercicios. 
 Llamé a la imagen todo-db:latest
 ```bash
@@ -7,7 +9,7 @@ cd entregables/01-monolith/todo-app
 docker build -f ./Dockerfile.todos_db -t todo-db:latest .
 ```
 - Para que minikube "vea" la imagen que he creado en local: `minikube image load todo-db:latest`
-- Además he tenido que indicar que nunca intente hacer pull para que no entre en PullBackoff
+- Además he tenido que indicar que nunca intente hacer pull para que no entre en PullBackoff (con `imagePullPolicy: Never`)
 - Tras aplicar los cambios:
 ```bash
 ❯ kubectl get pods
@@ -29,4 +31,10 @@ todo-db-0                        1/1     Running   0             29s
  21 | Learn K8s     | f         | 2020-12-04 19:12:16.174+00 |      
 (3 rows)
 ```
+- He configurado sólo una instancia de la bbdd ya que cada uno tiene su volumen de datos y no tendría sentido tener N bases de datos cada una
+con su volumen. Sin una configuración para que se comuniquen y haya una master y otras de réplica de solo lectura, sólo podemos escalar verticalmente.
+- Los artefactos que creé son:
+  - El servicio en [./todo-db-svc.yml](./todo-db-svc.yml)
+  - La configuración de la base de datos en un config map en [./todo-db-config.yml](./todo-db-config.yml)
+  - El statefulset con la base de datos en [./todo-db-ss.yml](./todo-db-ss.yml)
 
