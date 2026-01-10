@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-app
+  template:
+    metadata:
+      labels:
+        app: todo-app
+    spec:
+      containers:
+      - image: todo-app:latest
+        # Never Since I created the image locally:
+        imagePullPolicy: Never
+        name: todo-app
+        envFrom:
+        - configMapRef:
+            name: todo-app-config
+        resources:
+          limits:
+            cpu: 100m
+            memory: 60Mi
+          requests:
+            cpu: 100m
+            memory: 60Mi
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3

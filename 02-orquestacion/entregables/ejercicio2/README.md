@@ -2,7 +2,7 @@
 
 ## Paso 1. Crear una capa de persistencia de datos
 
-- Tuve que crear la imagen porque utilizo un macbook para los ejercicios. 
+- Tuve que crear la imagen porque la disponible rápida estaba creada sólo para amd64 mi arquitectura es arm64 para los ejercicios. 
 Llamé a la imagen todo-db:latest
 ```bash
 cd entregables/01-monolith/todo-app
@@ -38,3 +38,21 @@ con su volumen. Sin una configuración para que se comuniquen y haya una master 
   - La configuración de la base de datos en un config map en [./todo-db-config.yml](./todo-db-config.yml)
   - El statefulset con la base de datos en [./todo-db-ss.yml](./todo-db-ss.yml)
 
+## Paso 2. Crear todo-app
+- Repetí los pasos de crear la imagen e injectarla dentro de minikube:
+  - `docker build -f ./Dockerfile -t todo-app:latest .`
+  - `minikube image load todo-app:latest`
+- Creé el servicio y después el deployment:
+  - Servicio tipo load balancer [./todo-app-svc.yml](./todo-app-svc.yml)
+  - ConfigMap con todas las variables de entorno, como dice el enunciado [./todo-app-config.yml](./todo-app-config.yml)
+    - Conecté a la bbdd a través del nombre de su servicio
+  - Deployment en [./todo-app-deploy.yml](./todo-app-deploy.yml) 
+
+Finalmente ejecuto el comando de minikube para exponer el servicio en localhost:
+```bash
+❯ minikube service todo-app --url
+http://127.0.0.1:54853
+```
+
+Y funciona accediéndola con el navegador:
+<img src="./working-app.png">
