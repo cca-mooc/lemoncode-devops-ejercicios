@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: todo-front-distributed
+  name: todo-api-distributed
 spec:
   selector:
-    app: todo-front-distributed
+    app: todo-api-distributed
   ports:
     - protocol: TCP
-      port: 80
+      port: 3000
   type: ClusterIP

@@ -1,25 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: todo-front-distributed
+  name: todo-api-distributed
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: todo-front-distributed
+      app: todo-api-distributed
   template:
     metadata:
       labels:
-        app: todo-front-distributed
+        app: todo-api-distributed
     spec:
       containers:
-      - image: todo-front-distributed:latest
+      - image: todo-api-distributed:latest
         # Never Since I created the image locally:
         imagePullPolicy: Never
-        name: todo-front-distributed
+        name: todo-api-distributed
         env:
-        - name: API_HOST
-          value: /api
+        - name: NODE_ENV
+          value: production
+        - name: PORT
+          value: "3000"
+        - name: POKE
+          value: "poke si"
         resources:
           limits:
             cpu: 100m
@@ -29,8 +33,8 @@ spec:
             memory: 60Mi
         livenessProbe:
           httpGet:
-            path: /
-            port: 80
+            path: /live/
+            port: 3000
           initialDelaySeconds: 30
           periodSeconds: 10
           timeoutSeconds: 5
